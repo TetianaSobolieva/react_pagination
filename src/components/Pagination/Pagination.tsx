@@ -3,14 +3,14 @@ import classNames from 'classnames';
 type Props = {
   total: number;
   perPage: number;
-  currentPage: number;
+  currentPage?: number;
   onPageChange: (newPage: number) => void;
 };
 
 export const Pagination: React.FC<Props> = ({
   total,
   perPage,
-  currentPage,
+  currentPage = 1,
   onPageChange,
 }) => {
   const totalPages = Math.ceil(total / perPage);
@@ -23,7 +23,9 @@ export const Pagination: React.FC<Props> = ({
           className="page-link"
           href="#prev"
           aria-disabled={currentPage === 1}
-          onClick={() => {
+          onClick={event => {
+            event.preventDefault();
+
             if (currentPage > 1) {
               onPageChange(currentPage - 1);
             }
@@ -42,8 +44,10 @@ export const Pagination: React.FC<Props> = ({
             className="page-link"
             href={`#${el}`}
             onClick={event => {
+              event.preventDefault();
+
               if (el !== currentPage) {
-                onPageChange(+event.currentTarget.textContent);
+                onPageChange(el);
               }
             }}
           >
@@ -61,7 +65,9 @@ export const Pagination: React.FC<Props> = ({
           className="page-link"
           href="#next"
           aria-disabled={currentPage === totalPages}
-          onClick={() => {
+          onClick={event => {
+            event.preventDefault();
+
             if (currentPage < totalPages) {
               onPageChange(currentPage + 1);
             }
